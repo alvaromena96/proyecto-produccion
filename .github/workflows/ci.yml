@@ -34,7 +34,12 @@ jobs:
           cd FRONTEND/cliente-react
           npm install
 
+      - name: Instalar navegadores Playwright
+        run: |
+          cd FRONTEND/cliente-react
+          npx playwright install --with-deps
+
       - name: Ejecutar tests frontend
         run: |
-          cd FRONTEND/cliente-react 
+          cd FRONTEND/cliente-react
           npx playwright test
