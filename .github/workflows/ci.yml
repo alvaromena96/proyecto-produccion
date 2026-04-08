@@ -22,7 +22,7 @@ jobs:
       - name: Ejecutar tests backend
         run: |
           cd BACKEND/demo
-          ./mvnw test
+          mvn test
 
       - name: Configurar Node
         uses: actions/setup-node@v3
