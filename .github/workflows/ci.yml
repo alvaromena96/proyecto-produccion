@@ -21,7 +21,7 @@ jobs:
 
       - name: Ejecutar tests backend
         run: |
-          cd backend/demo/demo
+          cd backend/demo
           ./mvnw test
 
       - name: Configurar Node
