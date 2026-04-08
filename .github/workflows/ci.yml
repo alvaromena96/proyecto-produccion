@@ -31,10 +31,10 @@ jobs:
 
       - name: Instalar frontend
         run: |
-          cd FRONTEND
+          cd FRONTEND/cliente-react ✅
           npm install
 
       - name: Ejecutar tests frontend
         run: |
-          cd FRONTEND
+          cd FRONTEND/cliente-react 
           npx playwright test
