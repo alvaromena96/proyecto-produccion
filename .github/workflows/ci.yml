@@ -31,7 +31,7 @@ jobs:
 
       - name: Instalar frontend
         run: |
-          cd FRONTEND/cliente-react ✅
+          cd FRONTEND/cliente-react
           npm install
 
       - name: Ejecutar tests frontend
