@@ -39,7 +39,12 @@ jobs:
           cd FRONTEND/cliente-react
           npx playwright install --with-deps
 
+      - name: Instalar wait-on
+        run: npm install -g wait-on
+
       - name: Ejecutar tests frontend
         run: |
           cd FRONTEND/cliente-react
+          npm run dev &
+          wait-on http://localhost:5173
           npx playwright test
