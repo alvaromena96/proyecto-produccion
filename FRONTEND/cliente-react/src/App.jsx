@@ -1,98 +1,113 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [productos, setProductos] = useState([])
-  const [estado, setEstado] = useState("")
+  const [productos, setProductos] = useState([]);
+  const [estado, setEstado] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8080/api/productos", {
       headers: {
-        "Authorization": "Basic " + btoa("admin:admin123")
-      }
+        Authorization: "Basic " + btoa("admin:admin123"),
+      },
     })
-      .then(res => res.json())
-      .then(data => setProductos(data))
-  }, [])
+      .then((res) => res.json())
+      .then((data) => setProductos(data));
+  }, []);
 
-  // Healthcheck como ADMIN (debe funcionar)
   const healthAdmin = async () => {
     try {
-      setEstado("Cargando...")
+      setEstado("Cargando...");
 
       const res = await fetch("http://localhost:8080/healthcheck", {
         headers: {
-          "Authorization": "Basic " + btoa("admin:admin123")
-        }
-      })
+          Authorization: "Basic " + btoa("admin:admin123"),
+        },
+      });
 
       if (!res.ok) {
-        setEstado("ERROR " + res.status)
-        return
+        setEstado("ERROR " + res.status);
+        return;
       }
 
-      const data = await res.text()
-      setEstado(data)
-
+      const data = await res.text();
+      setEstado(data);
     } catch (error) {
-      setEstado("Error de conexión con el servidor")
+      setEstado("Error de conexión con el servidor");
     }
-  }
+  };
 
-  // Healthcheck como CLIENTE (debe dar 403)
   const healthCliente = async () => {
     try {
-      setEstado("Cargando...")
+      setEstado("Cargando...");
 
       const res = await fetch("http://localhost:8080/healthcheck", {
         headers: {
-          "Authorization": "Basic " + btoa("cliente:cliente123")
-        }
-      })
+          Authorization: "Basic " + btoa("cliente:cliente123"),
+        },
+      });
 
       if (!res.ok) {
-        setEstado("ERROR " + res.status)
-        return
+        setEstado("ERROR " + res.status);
+        return;
       }
 
-      const data = await res.text()
-      setEstado(data)
-
+      const data = await res.text();
+      setEstado(data);
     } catch (error) {
-      setEstado("Error de conexión con el servidor")
+      setEstado("Error de conexión con el servidor");
     }
-  }
+  };
 
   return (
-    <div>
-      <h1>Lista de productos</h1>
+    <div className="container-fluid bg-light min-vh-100 p-5">
 
-      {productos.length === 0 ? (
-        <p>No hay productos en la base de datos</p>
-      ) : (
-        <ul>
-          {productos.map(p => (
-            <li key={p.id}>
-              {p.nombre} - {p.precio}€
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="row">
 
-      <hr />
+        {/* IZQUIERDA - PRODUCTOS */}
+        <div className="col-md-6">
+          <div className="card p-4 shadow rounded-4 h-100">
+            <h1 className="mb-4 fs-3 text-primary">Lista de productos</h1>
 
-      <h2>Comprobar estado del servidor</h2>
+            {productos.length === 0 ? (
+              <p>No hay productos en la base de datos</p>
+            ) : (
+              <ul className="list-group">
+                {productos.map((p) => (
+                  <li key={p.id} className="list-group-item">
+                    {p.nombre} - {p.precio}€
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
 
-      <button onClick={healthAdmin}>
-        Healthcheck como ADMIN
-      </button>
+        {/* DERECHA - SERVIDOR */}
+        <div className="col-md-6">
+          <div className="card p-4 shadow rounded-4 h-100 fade-in">
+            <h2 className="mb-4 fs-5 text-secondary">
+              Comprobar estado del servidor
+            </h2>
 
-      <button onClick={healthCliente} style={{ marginLeft: "10px" }}>
-        Healthcheck como CLIENTE
-      </button>
+            <div className="d-flex flex-column gap-3">
+              <button onClick={healthAdmin} className="btn btn-primary">
+                Healthcheck ADMIN
+              </button>
 
-      <p>{estado}</p>
+              <button onClick={healthCliente} className="btn btn-warning">
+                Healthcheck CLIENTE
+              </button>
+            </div>
+
+            <p className="fw-bold mt-4">{estado}</p>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

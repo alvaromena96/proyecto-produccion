@@ -28,30 +28,49 @@ function ItemList() {
     loadItems();
   };
 
-  return (
-    <div>
-      <h2>Listado desde la API</h2>
+return (
+  <div className="container-fluid">
+    
+    <div className="row">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={newItem}
-          onChange={(e) => setNewItem(e.target.value)}
-          placeholder="Nuevo elemento"
-        />
-        <button type="submit">Añadir</button>
-      </form>
+      {/* SIDEBAR */}
+      <div className="col-md-3 bg-dark text-white p-4" style={{ minHeight: "100vh" }}>
+        <h4 className="mb-4">Panel</h4>
 
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            {item.name}
-            <button onClick={() => handleDelete(item.id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+        <button onClick={healthAdmin} className="btn btn-success w-100 mb-2">
+          Healthcheck ADMIN
+        </button>
+
+        <button onClick={healthCliente} className="btn btn-warning w-100">
+          Healthcheck CLIENTE
+        </button>
+
+        <hr />
+
+        <p>{estado}</p>
+      </div>
+
+      {/* CONTENIDO PRINCIPAL */}
+      <div className="col-md-9 p-4">
+        <h1 className="mb-4">Lista de productos</h1>
+
+        {productos.length === 0 ? (
+          <p>No hay productos en la base de datos</p>
+        ) : (
+          <ul className="list-group">
+            {productos.map((p) => (
+              <li key={p.id} className="list-group-item">
+                {p.nombre} - {p.precio}€
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default ItemList;

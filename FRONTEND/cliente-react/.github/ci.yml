@@ -1,0 +1,40 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Ejecutar tests backend
+        run: |
+          cd backend/demo/demo
+          ./mvnw test
+
+      - name: Configurar Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar frontend
+        run: |
+          cd frontend
+          npm install
+
+      - name: Ejecutar tests frontend
+        run: |
+          cd frontend
+          npx playwright test
